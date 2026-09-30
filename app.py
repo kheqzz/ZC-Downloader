@@ -7,7 +7,7 @@ import streamlit as st
 st.set_page_config(page_title="Script Controller & Monitor", layout="wide")
 st.title("🚀 Script Controller & Monitor")
 
-PID_FILE = "process.pid"
+PID_FILE = "data/process.pid"
 
 # Helper untuk membaca PID aktif langsung dari sistem OS VPS
 def get_active_pid():
@@ -117,7 +117,7 @@ def render_logs():
     with col1:
         st.markdown("**Done Log (`done.txt`)**")
         try:
-            with open("done.txt", "r", encoding="utf-8") as f:
+            with open("data/done.txt", "r", encoding="utf-8") as f:
                 content = f.read()
                 if content.strip():
                     st.code(content, language="text", height=350)
@@ -127,11 +127,11 @@ def render_logs():
             st.warning("File done.txt tidak ditemukan.")
 
     with col2:
-        count = count_lines_in_file("zerochan_api.log")
+        count = count_lines_in_file("data/zerochan_api.log")
         st.markdown(f"**Zerochan API Log (`zerochan_api.log`) (`Count {count}`)**")
         
         try:
-            with open("zerochan_api.log", "r", encoding="utf-8") as f:
+            with open("data/zerochan_api.log", "r", encoding="utf-8") as f:
                 content2 = f.read()
                 if content2.strip():
                     st.code(content2, language="text", height=350)

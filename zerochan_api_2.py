@@ -14,7 +14,10 @@ IMMICH_API_KEY = os.getenv("IMMICH_API_KEY")
 IMMICH_UPLOAD_URL = os.getenv("IMMICH_UPLOAD_URL")
 PAGE_SIZE = 100 
 
-logging.basicConfig(level=logging.INFO, format="%(message)s",filename="zerochan_api.log",filemode='w')
+if not os.path.exists("data"):
+    os.makedirs("data")
+
+logging.basicConfig(level=logging.INFO, format="%(message)s",filename="data/zerochan_api.log",filemode='w')
 logger = logging.getLogger(__name__)
 class RateLimiter:
     """Rate limiter to ensure we don't exceed the API's rate limit."""
@@ -69,7 +72,7 @@ def iter_all_entries(tag: str):
         page += 1
 def load_done() -> set[str]:
     """Load the set of already downloaded entry IDs from a file."""
-    done_file = "done.txt"
+    done_file = "data/done.txt"
     if os.path.exists(done_file):
         with open(done_file, "r") as f:
             return set(line.strip() for line in f)
@@ -77,7 +80,7 @@ def load_done() -> set[str]:
 
 def mark_done(entry_id: str):
     """Mark an entry ID as done by appending it to the done.txt file."""
-    with open("done.txt", "a") as f:
+    with open("data/done.txt", "a") as f:
         if entry_id not in load_done():
             f.write(f"{entry_id}\n")
 
