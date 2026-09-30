@@ -106,7 +106,7 @@ def download_all(tag: str, save_dir: str = "./tmp"):
             continue
         try:
             detail = _get(f"/{entry_id}")
-            url = detail.get("full") or detail.get("large")
+            url = detail.get("full") or detail.get("large") or detail.get('potrait') or detail.get('landscape')
             if not url:
                 logger.warning(f"No image URL for entry {entry_id}, skipping.")
                 print(f"No image URL for entry {entry_id}, skipping.")
