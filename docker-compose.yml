@@ -7,9 +7,7 @@ services:
     ports:
       - "8501:8501"
     volumes:
-      - ./done.txt:/app/done.txt
-      - ./zerochan_api.log:/app/zerochan_api.log
-      - ./process.pid:/app/process.pid
+      - zerochan_data:/app/data
       - ./.env:/app/.env:ro
     environment:
       - PYTHONUNBUFFERED=1
@@ -19,3 +17,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
+volumes:
+  zerochan_data:
