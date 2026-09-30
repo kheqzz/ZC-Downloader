@@ -67,6 +67,7 @@ def iter_all_entries(tag: str):
         items = _get(path, {"p": page, "l": PAGE_SIZE}).get("items", [])
         if not items:
             return
+        logger.info(f"Fetched {len(items)} items from page {page} for tag '{tag}'")
         print(f"Fetched {len(items)} items from page {page} for tag '{tag}'")
         yield from items
         page += 1
@@ -107,6 +108,7 @@ def download_all(tag: str, save_dir: str = "./tmp"):
             detail = _get(f"/{entry_id}")
             url = detail.get("full") or detail.get("large")
             if not url:
+                logger.warning(f"No image URL for entry {entry_id}, skipping.")
                 print(f"No image URL for entry {entry_id}, skipping.")
                 continue
             limiter.wait()
@@ -121,7 +123,8 @@ def download_all(tag: str, save_dir: str = "./tmp"):
             print(f"Error processing entry {entry_id}: {e}")
             
 
-    print(f"Download complete. {done} new images downloaded, {skipped} skipped (already exist).")
+    logger.info(f"Finished processing tag '{tag}'. Total done: {done}, skipped: {skipped}")
+    logger.info("================= Download Complete =================")
 
     
 
@@ -165,6 +168,7 @@ def upload_image_to_immich(file_name: str, data:bytes, entry_id: str,retries: in
 if __name__ == "__main__":
 
     if len(sys.argv) < 2:
+        logger.error("Character not provided. Usage: python zerochan_api.py <tag>")
         print("Usage: python zerochan_api.py <tag>")
         sys.exit(1)
 
@@ -172,4 +176,5 @@ if __name__ == "__main__":
     try:
         download_all(tag)
     except Exception as e:
+        logger.error(f"Error during download/upload process: {e}")
         print(f"Error during download/upload process: {e}")
