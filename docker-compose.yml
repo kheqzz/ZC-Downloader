@@ -9,8 +9,6 @@ services:
     volumes:
       - zerochan_data:/app/data
 
-    environment:
-      - PYTHONUNBUFFERED=1
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8501/_stcore/health"]
       interval: 30s
