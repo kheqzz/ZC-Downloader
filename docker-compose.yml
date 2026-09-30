@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  zerochan:
+    build: .
+    container_name: zerochan
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./done.txt:/app/done.txt
+      - ./zerochan_api.log:/app/zerochan_api.log
+      - ./process.pid:/app/process.pid
+      - ./.env:/app/.env:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
