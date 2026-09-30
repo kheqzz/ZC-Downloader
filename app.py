@@ -5,7 +5,7 @@ import time
 import streamlit as st
 
 st.set_page_config(page_title="Script Controller & Monitor", layout="wide")
-st.title("🚀 Script Controller & Monitor")
+st.title("Zerochan API Script Downloader Monitor")
 
 PID_FILE = "data/process.pid"
 
